@@ -14,8 +14,10 @@ public with sharing class FileUploaderController {
     String accessToken = '';
     
     if (response.getStatusCode() == 200) {
+
       Map<String, Object> jsonResponse = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
       accessToken = (String) jsonResponse.get('access_token');
+
     }
     
     return accessToken;
@@ -27,7 +29,6 @@ public with sharing class FileUploaderController {
     // Return the fileId and any other relevant information
     // Define the Google Drive API endpoint for file uploads
     String googleDriveUrl = 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart';
-
     // Construct the request body with the file metadata and content
     String boundary = '----------------------------' + Datetime.now().getTime();
     String requestBody = '--' + boundary + '\r\n' +
@@ -37,7 +38,6 @@ public with sharing class FileUploaderController {
                          'Content-Type: application/octet-stream\r\n\r\n' +
                          base64Data + '\r\n' +
                          '--' + boundary + '--';
-
     // Make the HTTP request to Google Drive API
     HttpRequest request = new HttpRequest();
     request.setEndpoint(googleDriveUrl);
@@ -61,7 +61,6 @@ public with sharing class FileUploaderController {
   public static Map<String, Object> getFileDetailsFromGoogleDrive(String fileId) {
     // Define the Google Drive API endpoint for file details
     String googleDriveUrl = 'https://www.googleapis.com/drive/v3/files/' + fileId;
-
     // Make the HTTP request to Google Drive API
     HttpRequest request = new HttpRequest();
     request.setEndpoint(googleDriveUrl);
@@ -94,7 +93,6 @@ public with sharing class FileUploaderController {
       childRecord.Name =(String) (getFileDetailsFromGoogleDrive(fileId).get('name'));
        // Replace with your method to retrieve file details from Google Drive
       // Set any other relevant fields in the child record
-
       childRecords.add(childRecord);
     }
 
